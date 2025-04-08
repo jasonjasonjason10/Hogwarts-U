@@ -9,12 +9,16 @@ const PORT = 3000;
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 
+//Mount Routes??
+app.use("/api/departments", require("./routes/departments"));
+app.use("/api/faculty", require("./routes/faculty"));
+
 //Test route? have we done this before?
 app.get("/", (req, res) => {
-  res.send("WHAT THE FOOOOK!");
+  res.send("Welcome to Hogwarts API!");
 });
 
 //Starting server??
-app.listen(port, () => {
+app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

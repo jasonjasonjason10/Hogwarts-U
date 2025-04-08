@@ -61,7 +61,6 @@ async function seedData() {
 
 async function seed() {
   try {
-    await client.connect();
     await dropTables();
     await createTables();
     await seedData();
@@ -69,7 +68,6 @@ async function seed() {
   } catch (err) {
     console.error("Error seeding DB:", err);
   } finally {
-    client.end();
   }
 }
 
