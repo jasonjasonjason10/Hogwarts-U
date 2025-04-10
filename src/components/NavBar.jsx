@@ -16,9 +16,15 @@ const NavBar = () => {
   return (
     <AppBar position="static" sx={{ mb: 4 }}>
       <Toolbar>
-        <Box sx={{ flexGrow: 1, display: "flex", gao: 2 }}>
+        <Box sx={{ flexGrow: 1 }}>
           <Button color="inherit" component={Link} to="/">
             Home
+          </Button>
+          <Button color="inherit" component={Link} to="/departments">
+            Departments
+          </Button>
+          <Button color="inherit" component={Link} to="/faculty">
+            Faculty
           </Button>
           {token && (
             <Button color="inherit" component={Link} to="/admin">
