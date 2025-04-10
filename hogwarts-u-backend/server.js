@@ -18,6 +18,9 @@ app.get("/", (req, res) => {
   res.send("Welcome to Hogwarts API!");
 });
 
+//register admin route?
+app.use("/api/admin", require("./routes/admin"));
+
 //Starting server??
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

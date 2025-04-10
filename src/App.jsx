@@ -1,16 +1,15 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>Vite + React</h1>
-    </>
+    <Routes>
+      <Route path="/" element={<h1>Welcome to Hogwarts University</h1>} />
+      <Route path="/admin" element={<AdminDashboard />} />
+    </Routes>
   );
 }
 
 export default App;
+
+
