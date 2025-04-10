@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -7,10 +8,11 @@ const Login = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
-    e.preventdefault();
-    setError();
+    e.preventDefault();
+    setError("");
 
     try {
       const res = await fetch(`${API_URL}/admin/login`, {
@@ -22,7 +24,7 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        localStorage.setItem("token", data.token);
+        login(data.token);
         alert("Login successfully!");
         navigate("/admin");
       } else {

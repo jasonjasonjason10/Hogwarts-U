@@ -18,24 +18,26 @@ const AdminDashboard = () => {
   const [faculty, setFaculty] = useState([]);
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL;
+  const [currentlyEditingDeptId, setCurrentlyEditingDeptId] = useState(null);
+  const [currentlyEditingProfId, setCurrentlyEditingProfId] = useState(null);
+
+  //this is fetching the departments and the faculty
+  const fetchData = async () => {
+    try {
+      const deptRes = await fetch(`${API_URL}/departments`);
+      const facultyRes = await fetch(`${API_URL}/faculty`);
+      const deptData = await deptRes.json();
+      const facultyData = await facultyRes.json();
+      setDepartments(deptData);
+      setFaculty(facultyData);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    //this is fetching the departments and the faculty
-    const fetchData = async () => {
-      try {
-        const deptRes = await fetch(`${API_URL}/departments`);
-        const facultyRes = await fetch(`${API_URL}/faculty`);
-        const deptData = await deptRes.json();
-        const facultyData = await facultyRes.json();
-        setDepartments(deptData);
-        setFaculty(facultyData);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -56,6 +58,46 @@ const AdminDashboard = () => {
     department_id: "",
   });
 
+  //This is defining my state for editing departments
+  const [editDeptForm, setEditDeptForm] = useState({
+    name: "",
+    description: "",
+    banner_image: "",
+    contact_email: "",
+  });
+
+  //This is defining my state for editing faculty
+  const [editProfForm, setEditProfForm] = useState({
+    name: "",
+    email: "",
+    bio: "",
+    profile_image: "",
+    department_id: "",
+  });
+
+  //handler to edit departments???
+  const startEditingDepartment = (dept) => {
+    setCurrentlyEditingDeptId(dept.id);
+    setEditDeptForm({
+      name: dept.name,
+      description: dept.description,
+      banner_image: dept.banner_image,
+      contact_email: dept.contact_email,
+    });
+  };
+
+  //handler to edit faculty??
+  const startEditingProfessor = (prof) => {
+    setCurrentlyEditingProfId(prof.id);
+    setEditProfForm({
+      name: prof.name,
+      email: prof.email,
+      bio: prof.bio,
+      profile_image: prof.profile_image,
+      department_id: prof.department_id,
+    });
+  };
+
   //this will be my handler function for a new department
   const handleAddDepartment = async (e) => {
     e.preventDefault();
@@ -72,7 +114,7 @@ const AdminDashboard = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setDepartments([...departments, data.department]);
+        await fetchData();
         setNewDept({
           name: "",
           description: "",
@@ -104,7 +146,7 @@ const AdminDashboard = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setFaculty([...faculty, data.faculty]);
+        await fetchData();
         setNewProfessor({
           name: "",
           email: "",
@@ -122,6 +164,11 @@ const AdminDashboard = () => {
 
   //THis is my DELETE a proffesor function
   const handleDeleteProfessor = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this professor?"
+    );
+    if (!confirmed) return;
+
     try {
       const res = await fetch(`${API_URL}/faculty/${id}`, {
         method: "DELETE",
@@ -142,6 +189,11 @@ const AdminDashboard = () => {
 
   //This is my function to DELETE a department
   const handleDeleteDepartment = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this department?"
+    );
+    if (!confirmed) return;
+
     try {
       const res = await fetch(`${API_URL}/departments/${id}`, {
         method: "DELETE",
@@ -158,6 +210,52 @@ const AdminDashboard = () => {
       }
     } catch (err) {
       console.error("Error deleting department:", err);
+    }
+  };
+
+  //For Editing department? Im so lost now.
+  const handleUpdateDepartment = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/departments/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(editDeptForm),
+      });
+
+      if (res.ok) {
+        setCurrentlyEditingDeptId(null);
+        await fetchData();
+      } else {
+        console.error("Failed to update department");
+      }
+    } catch (err) {
+      console.error("Error updating department:", err);
+    }
+  };
+
+  //For Editing faculty??
+  const handleUpdateProfessor = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/faculty/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(editProfForm),
+      });
+
+      if (res.ok) {
+        setCurrentlyEditingProfId(null);
+        await fetchData(); // refresh
+      } else {
+        console.error("Failed to update professor");
+      }
+    } catch (err) {
+      console.error("Error updating professor:", err);
     }
   };
 
@@ -185,18 +283,72 @@ const AdminDashboard = () => {
               <TableBody>
                 {departments.map((dept) => (
                   <TableRow key={dept.id}>
-                    <TableCell>{dept.name}</TableCell>
-                    <TableCell>{dept.description}</TableCell>
-                    <TableCell>{dept.contact_email}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => handleDeleteDepartment(dept.id)}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
+                    {currentlyEditingDeptId === dept.id ? (
+                      <>
+                        <TableCell>
+                          <TextField
+                            value={editDeptForm.name}
+                            onChange={(e) =>
+                              setEditDeptForm({
+                                ...editDeptForm,
+                                name: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={editDeptForm.description}
+                            onChange={(e) =>
+                              setEditDeptForm({
+                                ...editDeptForm,
+                                description: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={editDeptForm.contact_email}
+                            onChange={(e) =>
+                              setEditDeptForm({
+                                ...editDeptForm,
+                                contact_email: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            onClick={() => handleUpdateDepartment(dept.id)}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            onClick={() => setCurrentlyEditingDeptId(null)}
+                          >
+                            Cancel
+                          </Button>
+                        </TableCell>
+                      </>
+                    ) : (
+                      <>
+                        <TableCell>{dept.name}</TableCell>
+                        <TableCell>{dept.description}</TableCell>
+                        <TableCell>{dept.contact_email}</TableCell>
+                        <TableCell>
+                          <Button onClick={() => startEditingDepartment(dept)}>
+                            Edit
+                          </Button>
+                          <Button
+                            color="error"
+                            onClick={() => handleDeleteDepartment(dept.id)}
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -268,82 +420,96 @@ const AdminDashboard = () => {
               <TableBody>
                 {faculty.map((prof) => (
                   <TableRow key={prof.id}>
-                    <TableCell>{prof.name}</TableCell>
-                    <TableCell>{prof.email}</TableCell>
-                    <TableCell>{prof.bio}</TableCell>
-                    <TableCell>{prof.department_id}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => handleDeleteProfessor(prof.id)}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
+                    {currentlyEditingProfId === prof.id ? (
+                      <>
+                        <TableCell>
+                          <TextField
+                            value={editProfForm.name}
+                            onChange={(e) =>
+                              setEditProfForm({
+                                ...editProfForm,
+                                name: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={editProfForm.email}
+                            onChange={(e) =>
+                              setEditProfForm({
+                                ...editProfForm,
+                                email: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={editProfForm.bio}
+                            onChange={(e) =>
+                              setEditProfForm({
+                                ...editProfForm,
+                                bio: e.target.value,
+                              })
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            value={editProfForm.department_id}
+                            onChange={(e) =>
+                              setEditProfForm({
+                                ...editProfForm,
+                                department_id: e.target.value,
+                              })
+                            }
+                          >
+                            {departments.map((dept) => (
+                              <MenuItem key={dept.id} value={dept.id}>
+                                {dept.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            onClick={() => handleUpdateProfessor(prof.id)}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            onClick={() => setCurrentlyEditingProfId(null)}
+                          >
+                            Cancel
+                          </Button>
+                        </TableCell>
+                      </>
+                    ) : (
+                      <>
+                        <TableCell>{prof.name}</TableCell>
+                        <TableCell>{prof.email}</TableCell>
+                        <TableCell>{prof.bio}</TableCell>
+                        <TableCell>{prof.department_id}</TableCell>
+                        <TableCell>
+                          <Button onClick={() => startEditingProfessor(prof)}>
+                            Edit
+                          </Button>
+                          <Button
+                            color="error"
+                            onClick={() => handleDeleteProfessor(prof.id)}
+                          >
+                            Delete
+                          </Button>
+                        </TableCell>
+                      </>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
 
-          {/* <h3>Add New Professor</h3>
-          <form onSubmit={handleAddProfessor}>
-            <input
-              type="text"
-              placeholder="Name"
-              value={newProfessor.name}
-              onChange={(e) =>
-                setNewProfessor({ ...newProfessor, name: e.target.value })
-              }
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={newProfessor.email}
-              onChange={(e) =>
-                setNewProfessor({ ...newProfessor, email: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Bio"
-              value={newProfessor.bio}
-              onChange={(e) =>
-                setNewProfessor({ ...newProfessor, bio: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Profile Image URL"
-              value={newProfessor.profile_image}
-              onChange={(e) =>
-                setNewProfessor({
-                  ...newProfessor,
-                  profile_image: e.target.value,
-                })
-              }
-            />
-            <select
-              value={newProfessor.department_id}
-              onChange={(e) =>
-                setNewProfessor({
-                  ...newProfessor,
-                  department_id: e.target.value,
-                })
-              }
-              required
-            >
-              <option value="">Select Department</option>
-              {departments.map((dept) => (
-                <option key={dept.id} value={dept.id}>
-                  {dept.name}
-                </option>
-              ))}
-            </select>
-            <button type="submit">Add Professor</button>
-          </form> */}
           <h3>Add New Professor</h3>
           <form onSubmit={handleAddProfessor} style={{ marginBottom: "2rem" }}>
             <TextField
