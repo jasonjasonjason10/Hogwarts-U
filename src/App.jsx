@@ -6,14 +6,26 @@ import NavBar from "./components/NavBar";
 import FacultyList from "./public-pages/FacultyList";
 import DepartmentList from "./public-pages/DepartmentList";
 import DepartmentDetail from "./public-pages/DepartmentDetail";
+import "./index.css";
 
 function App() {
   return (
     <>
       <NavBar />
       <Routes>
-        <Route path="/" element={<h1 className="magic-title">Welcome to Hogwarts University</h1>} />
-       
+        <Route
+          path="/"
+          element={
+            <div style={{ position: "relative", height: "100vh" }}>
+              <h1 className="magic-title">Welcome to Hogwarts University</h1>
+              <img
+                src="/src/assets/harry.png"
+                alt="Harry flying"
+                className="harry-fly"
+              />
+            </div>
+          }
+        />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

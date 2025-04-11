@@ -261,13 +261,13 @@ const AdminDashboard = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Admin Dashboard</h1>
+      <h1 className="dash-txt">Admin Dashboard</h1>
 
       {loading ? (
         <p>Loading...</p>
       ) : (
         <>
-          <h2>Departments</h2>
+          <h2 className="dash-txt">Departments</h2>
           <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
             <Table>
               <TableHead>
@@ -277,7 +277,7 @@ const AdminDashboard = () => {
                   </TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Contact Email</TableCell>
-                  
+
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -369,7 +369,7 @@ const AdminDashboard = () => {
             </Table>
           </TableContainer>
 
-          <h3>Add New Department</h3>
+          <h3 className="dash-txt">Add New Department</h3>
           <form onSubmit={handleAddDepartment} style={{ marginBottom: "2rem" }}>
             <TextField
               label="Name"
@@ -378,6 +378,17 @@ const AdminDashboard = () => {
               required
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)", 
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               label="Description"
@@ -387,6 +398,17 @@ const AdminDashboard = () => {
               }
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)", 
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               label="Banner Image URL"
@@ -396,6 +418,17 @@ const AdminDashboard = () => {
               }
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)", 
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               label="Contact Email"
@@ -406,18 +439,35 @@ const AdminDashboard = () => {
               type="email"
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)", 
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <Button
               type="submit"
               variant="contained"
-              color="primary"
-              sx={{ mt: 1 }}
+              sx={{
+                backgroundColor: "#cd7f32", 
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "#b87333", 
+                },
+                mt: 1,
+              }}
             >
               Add Department
             </Button>
           </form>
 
-          <h2>Faculty</h2>
+          <h2 className="dash-txt">Faculty</h2>
           <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
             <Table>
               <TableHead>
@@ -470,6 +520,20 @@ const AdminDashboard = () => {
                           />
                         </TableCell>
                         <TableCell>
+                          <TextField
+                            label="Image URL"
+                            value={editProfForm.profile_image}
+                            onChange={(e) =>
+                              setEditProfForm({
+                                ...editProfForm,
+                                profile_image: e.target.value,
+                              })
+                            }
+                            fullWidth
+                            margin="dense"
+                          />
+                        </TableCell>
+                        <TableCell>
                           <Select
                             value={editProfForm.department_id}
                             onChange={(e) =>
@@ -500,6 +564,8 @@ const AdminDashboard = () => {
                         </TableCell>
                       </>
                     ) : (
+                      // your regular view mode code here...
+
                       <>
                         <TableCell>{prof.name}</TableCell>
                         <TableCell>{prof.email}</TableCell>
@@ -524,7 +590,7 @@ const AdminDashboard = () => {
             </Table>
           </TableContainer>
 
-          <h3>Add New Professor</h3>
+          <h3 className="dash-txt">Add New Professor</h3>
           <form onSubmit={handleAddProfessor} style={{ marginBottom: "2rem" }}>
             <TextField
               label="Name"
@@ -535,6 +601,17 @@ const AdminDashboard = () => {
               required
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)",
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               label="Email"
@@ -545,6 +622,17 @@ const AdminDashboard = () => {
               type="email"
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)",
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               label="Bio"
@@ -554,6 +642,17 @@ const AdminDashboard = () => {
               }
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)",
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <TextField
               label="Profile Image URL"
@@ -566,6 +665,17 @@ const AdminDashboard = () => {
               }
               fullWidth
               margin="dense"
+              InputProps={{
+                sx: {
+                  backgroundColor: "rgba(211, 211, 211, 0.2)",
+                  color: "white",
+                },
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: "white",
+                },
+              }}
             />
             <Select
               value={newProfessor.department_id}
@@ -579,6 +689,21 @@ const AdminDashboard = () => {
               fullWidth
               required
               margin="dense"
+              sx={{
+                backgroundColor: "rgba(211, 211, 211, 0.2)",
+                color: "white",
+                "& .MuiSvgIcon-root": {
+                  color: "white",
+                },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    backgroundColor: "#333",
+                    color: "white",
+                  },
+                },
+              }}
             >
               <MenuItem value="" disabled>
                 Select Department
@@ -589,11 +714,18 @@ const AdminDashboard = () => {
                 </MenuItem>
               ))}
             </Select>
+
             <Button
               type="submit"
               variant="contained"
-              color="primary"
-              sx={{ mt: 1 }}
+              sx={{
+                backgroundColor: "#cd7f32", 
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "#b87333", 
+                },
+                mt: 1,
+              }}
             >
               Add Professor
             </Button>

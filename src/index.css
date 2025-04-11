@@ -29,3 +29,66 @@ body {
   text-shadow: 2px 2px 0 #ffffff, 4px 4px 8px rgba(0, 0, 0, 0.3);
   margin-top: 20vh;
 }
+
+
+@keyframes flyAcross {
+  0% {
+    left: -150px;
+    top: 20%;
+  }
+  100% {
+    left: 100%;
+    top: 20%;
+  }
+}
+
+.harry-fly {
+  position: absolute;
+  width: 120px;
+  z-index: 5;
+  animation: flyAcross 12s linear infinite;
+  pointer-events: none;
+}
+
+.dash-txt {
+  color: white;
+  /* color: rgb(216, 162, 13); */
+  /* text-shadow: 2px 2px 0 #cea22a, 4px 4px 8px rgba(0, 0, 0, 0.3);
+  margin-top: 20vh; */
+}
+
+/* index.css */
+
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  h1, h2, h3 {
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  .magic-title {
+    font-size: 2rem;
+    padding: 1rem;
+  }
+
+  .MuiTableContainer-root {
+    overflow-x: auto;
+  }
+
+  .MuiTableCell-root {
+    font-size: 0.9rem;
+    padding: 6px;
+  }
+
+  .MuiButton-root {
+    font-size: 0.8rem;
+  }
+}

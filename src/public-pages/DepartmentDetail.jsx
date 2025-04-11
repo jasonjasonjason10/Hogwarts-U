@@ -134,13 +134,13 @@ const DepartmentDetail = () => {
 
   return (
     <Box sx={{ padding: 4 }}>
-      <Paper elevation={3} sx={{ padding: 3 }}>
+      <Paper elevation={3} sx={{ padding: 3, }}>
         {department.banner_image && (
           <Box
             sx={{
               width: "100%",
               height: 300,
-              backgroundColor: "black",
+              backgroundColor: "white",
               backgroundImage: `url(${department.banner_image})`,
               backgroundSize: "contain",
               backgroundRepeat: "no-repeat",

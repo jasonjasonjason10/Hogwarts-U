@@ -35,7 +35,7 @@ const FacultyList = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{color: "white"}}>
         Meet Our Professors
       </Typography>
       <Grid container spacing={3}>

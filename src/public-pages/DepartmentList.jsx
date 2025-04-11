@@ -31,7 +31,7 @@ const DepartmentList = () => {
 
   return (
     <Box sx={{ padding: "2rem" }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{color: "white"}}>
         Departments at Hogwarts
       </Typography>
 
