@@ -12,7 +12,8 @@ function App() {
     <>
       <NavBar />
       <Routes>
-        <Route path="/" element={<h1>Welcome to Hogwarts University</h1>} />
+        <Route path="/" element={<h1 className="magic-title">Welcome to Hogwarts University</h1>} />
+       
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

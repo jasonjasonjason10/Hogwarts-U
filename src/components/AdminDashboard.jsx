@@ -277,6 +277,7 @@ const AdminDashboard = () => {
                   </TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Contact Email</TableCell>
+                  
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -329,6 +330,19 @@ const AdminDashboard = () => {
                           >
                             Cancel
                           </Button>
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={editDeptForm.banner_image}
+                            onChange={(e) =>
+                              setEditDeptForm({
+                                ...editDeptForm,
+                                banner_image: e.target.value,
+                              })
+                            }
+                            label="Banner Image URL"
+                            fullWidth
+                          />
                         </TableCell>
                       </>
                     ) : (
