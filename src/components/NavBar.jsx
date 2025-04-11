@@ -1,75 +1,3 @@
-// import React from "react";
-// import { AppBar, Toolbar, Button, Box, Typography } from "@mui/material";
-// import { Link, useNavigate } from "react-router-dom";
-// import { useAuth } from "../AuthContext";
-
-// const NavBar = () => {
-//   const navigate = useNavigate();
-//   const { token, logout } = useAuth();
-
-//   const handleLogout = () => {
-//     logout();
-//     alert("Logged out!");
-//     navigate("/login");
-//   };
-
-//   return (
-//     <AppBar
-//       position="static"
-//       sx={{
-//         mb: 4,
-//         backgroundColor: "#3c1361",
-//         boxShadow: "0 4px 8px rgba(0,0,0,0.3)",
-//       }}
-//     >
-//       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-//         <Typography
-//           variant="h5"
-//           sx={{
-//             fontFamily: "Slithy, serif",
-//             letterSpacing: "1px",
-//             fontWeight: "bold",
-//           }}
-//         >
-//           Hogwarts U
-//         </Typography>
-
-//         <Box>
-//           <Button color="inherit" component={Link} to="/">
-//             Home
-//           </Button>
-//           <Button color="inherit" component={Link} to="/faculty">
-//             Faculty
-//           </Button>
-//           <Button color="inherit" component={Link} to="/departments">
-//             Departments
-//           </Button>
-//           {token && (
-//             <Button color="inherit" component={Link} to="/admin">
-//               Dashboard
-//             </Button>
-//           )}
-//           {token ? (
-//             <Button color="inherit" onClick={handleLogout}>
-//               Logout
-//             </Button>
-//           ) : (
-//             <>
-//               <Button color="inherit" component={Link} to="/login">
-//                 Login
-//               </Button>
-//               <Button color="inherit" component={Link} to="/register">
-//                 Register
-//               </Button>
-//             </>
-//           )}
-//         </Box>
-//       </Toolbar>
-//     </AppBar>
-//   );
-// };
-
-// export default NavBar;
 
 import React, { useState } from "react";
 import {
@@ -138,7 +66,7 @@ const NavBar = () => {
             Hogwarts U
           </Typography>
   
-          {/* Hamburger Menu for Mobile */}
+          {/* This is the hamburger */}
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               edge="start"
@@ -150,7 +78,7 @@ const NavBar = () => {
             </IconButton>
           </Box>
   
-          {/* Full Nav for Desktop */}
+          {/* Full Navbar for Desktop, when not a smaller screen.*/}
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <Button color="inherit" component={Link} to="/">
               Home
@@ -184,7 +112,7 @@ const NavBar = () => {
         </Toolbar>
       </AppBar>
   
-      {/* Drawer for Mobile */}
+      {/* Drawer for Mobile view on smaller screens, "Hamburger" style baby */}
       <Drawer
         anchor="left"
         open={drawerOpen}

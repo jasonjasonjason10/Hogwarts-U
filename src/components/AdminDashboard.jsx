@@ -250,7 +250,7 @@ const AdminDashboard = () => {
 
       if (res.ok) {
         setCurrentlyEditingProfId(null);
-        await fetchData(); // refresh
+        await fetchData(); 
       } else {
         console.error("Failed to update professor");
       }
@@ -564,7 +564,7 @@ const AdminDashboard = () => {
                         </TableCell>
                       </>
                     ) : (
-                      // your regular view mode code here...
+                    
 
                       <>
                         <TableCell>{prof.name}</TableCell>
